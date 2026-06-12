@@ -349,7 +349,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
    RSVP FORM SUBMIT
 ══════════════════════════════════════════ */
 // Google Apps Script web app endpoint — submit RSVP data
-const APPS_SCRIPT_URL = "REPLACE_WITH_APPS_SCRIPT_URL";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwz_BsjjWd5TlthWjJP-bHPSx8RK8EVsOaNllBMFVPjHGCjYZN8DFa3lRLAbhAbLkw3/exec";
 
 const form = document.getElementById('rsvpForm');
 form.addEventListener('submit', async e => {
