@@ -348,8 +348,11 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 /* ══════════════════════════════════════════
    RSVP FORM SUBMIT
 ══════════════════════════════════════════ */
+// Google Apps Script web app endpoint — submit RSVP data
+const APPS_SCRIPT_URL = "REPLACE_WITH_APPS_SCRIPT_URL";
+
 const form = document.getElementById('rsvpForm');
-form.addEventListener('submit', e => {
+form.addEventListener('submit', async e => {
   e.preventDefault();
   const btn = document.getElementById('rsvpBtn');
   const btnText = btn.querySelector('.btn-text');
@@ -360,33 +363,47 @@ form.addEventListener('submit', e => {
 
   const { name, email, attending, guests, message } = form;
   const events = [...form.querySelectorAll('input[name="events"]:checked')].map(c => c.value).join(', ');
-  const subject = `RSVP — Khujesta & Manjinder Wedding — ${name.value}`;
-  const body = `Name: ${name.value}\nEmail: ${email.value}\nAttending: ${attending.value}\nGuests: ${guests.value}\nCeremonies: ${events}\n\nMessage:\n${message.value}`;
-  const mailto = `mailto:info@thebfsai.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-  setTimeout(() => {
-    form.reset();
-    btnText.textContent = 'Send RSVP';
-    btn.disabled = false;
-    gsap.to(btn, { opacity: 1, duration: 0.2 });
+  const payload = {
+    name: name.value,
+    email: email.value,
+    attending: attending.value,
+    guests: guests.value,
+    events: events,
+    message: message.value
+  };
 
-    // Toast
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.innerHTML = `
-      <svg viewBox="0 0 20 20" fill="none" style="width:20px;height:20px;flex-shrink:0">
-        <path d="M10 18S2 12.5 2 7a5 5 0 018.36-3.71L10 4.8l.63-.88A5 5 0 0118 7c0 5.5-8 11-8 11z" fill="#C9A84C"/>
-      </svg>
-      <span>JazakAllah Khair — we'll be in touch soon.</span>`;
-    document.body.appendChild(toast);
-    gsap.fromTo(toast,
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.5, ease: 'silk' }
-    );
-    setTimeout(() => gsap.to(toast, { y: 20, opacity: 0, duration: 0.4, onComplete: () => toast.remove() }), 5000);
+  try {
+    // POST to Apps Script (no-cors because Google Apps Script doesn't send CORS headers on redirect)
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    console.warn('RSVP fetch error (may still have succeeded):', err);
+  }
 
-    window.location.href = mailto;
-  }, 800);
+  form.reset();
+  btnText.textContent = 'Send RSVP';
+  btn.disabled = false;
+  gsap.to(btn, { opacity: 1, duration: 0.2 });
+
+  // Toast
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `
+    <svg viewBox="0 0 20 20" fill="none" style="width:20px;height:20px;flex-shrink:0">
+      <path d="M10 18S2 12.5 2 7a5 5 0 018.36-3.71L10 4.8l.63-.88A5 5 0 0118 7c0 5.5-8 11-8 11z" fill="#C9A84C"/>
+    </svg>
+    <span>JazakAllah Khair — we'll be in touch soon.</span>`;
+  document.body.appendChild(toast);
+  gsap.fromTo(toast,
+    { y: 20, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.5, ease: 'silk' }
+  );
+  setTimeout(() => gsap.to(toast, { y: 20, opacity: 0, duration: 0.4, onComplete: () => toast.remove() }), 5000);
 });
 
 // Toast styles via JS (no extra CSS file)
