@@ -222,8 +222,8 @@ ScrollTrigger.create({
       stagger: 0.12, duration: 0.9, ease: 'silk', delay: 0.2
     });
     // Detail rows
-    gsap.to('#nikahText .cs-detail-row', {
-      x: 0, opacity: 1,
+    gsap.from('#nikahText .cs-detail-row', {
+      x: -20, opacity: 0,
       stagger: 0.12, duration: 0.7, ease: 'power2.out', delay: 0.4
     });
     // Quote
@@ -241,7 +241,7 @@ ScrollTrigger.create({
 ══════════════════════════════════════════ */
 ScrollTrigger.create({
   trigger: '#reception',
-  start: 'top 65%',
+  start: 'top 90%',
   once: true,
   onEnter: () => {
     gsap.to('#receptionPhoto', {
@@ -252,11 +252,10 @@ ScrollTrigger.create({
       yPercent: 100, opacity: 0,
       stagger: 0.12, duration: 0.9, ease: 'silk', delay: 0.2
     });
-    gsap.to('#receptionText .cs-detail-row', {
-      x: 0, opacity: 1,
+    gsap.from('#receptionText .cs-detail-row', {
+      x: -20, opacity: 0,
       stagger: 0.12, duration: 0.7, ease: 'power2.out', delay: 0.4
     });
-
   }
 });
 

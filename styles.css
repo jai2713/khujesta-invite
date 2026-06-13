@@ -478,7 +478,6 @@ h2 {
   display: flex; align-items: flex-start; gap: 18px;
   padding: 20px 0;
   border-bottom: 1px solid var(--gold-08);
-  opacity: 0; transform: translateX(-20px);
 }
 .cs-detail-row:first-of-type { border-top: 1px solid var(--gold-08); }
 .cs-detail-icon {
