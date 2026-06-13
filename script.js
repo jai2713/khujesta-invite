@@ -234,46 +234,7 @@ ScrollTrigger.create({
   }
 });
 
-/* ══════════════════════════════════════════
-   GALLERY
-══════════════════════════════════════════ */
-gsap.from('.gallery-header > *', {
-  y: 24, opacity: 0, stagger: 0.12, duration: 0.7, ease: 'power2.out',
-  scrollTrigger: { trigger: '.gallery-header', start: 'top 80%', once: true }
-});
 
-ScrollTrigger.batch('.gallery-item', {
-  start: 'top 90%', once: true,
-  onEnter: batch => gsap.to(batch, {
-    opacity: 1, y: 0,
-    stagger: 0.14, duration: 0.9, ease: 'silk'
-  })
-});
-
-// Drag-to-scroll gallery
-const reel = document.getElementById('galleryReel');
-let isDown = false, startX, scrollLeft;
-reel.addEventListener('mousedown', e => {
-  isDown = true; reel.style.cursor = 'grabbing';
-  startX = e.pageX - reel.offsetLeft;
-  scrollLeft = reel.scrollLeft;
-});
-reel.addEventListener('mouseleave', () => { isDown = false; reel.style.cursor = 'grab'; });
-reel.addEventListener('mouseup', () => { isDown = false; reel.style.cursor = 'grab'; });
-reel.addEventListener('mousemove', e => {
-  if (!isDown) return;
-  e.preventDefault();
-  const x = e.pageX - reel.offsetLeft;
-  reel.scrollLeft = scrollLeft - (x - startX) * 1.4;
-});
-
-// Fade hint out on first scroll
-reel.addEventListener('scroll', () => {
-  gsap.to('#galleryHint', { opacity: 0, duration: 0.4 });
-}, { once: true });
-gsap.from('#galleryHint', { opacity: 0, y: 10, duration: 0.6, delay: 1,
-  scrollTrigger: { trigger: '.gallery-section', start: 'top 60%', once: true }
-});
 
 /* ══════════════════════════════════════════
    RECEPTION SECTION
@@ -295,10 +256,7 @@ ScrollTrigger.create({
       x: 0, opacity: 1,
       stagger: 0.12, duration: 0.7, ease: 'power2.out', delay: 0.4
     });
-    gsap.to('#receptionText .cs-quote', {
-      y: 0, opacity: 1,
-      duration: 0.8, ease: 'power2.out', delay: 0.7
-    });
+
   }
 });
 
